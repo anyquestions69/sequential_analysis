@@ -1,4 +1,4 @@
-const { sign } = require('crypto');
+//const { sign } = require('crypto');
 const fs = require('fs')
 const natural = require('natural');
 const stemmer = natural.PorterStemmerRu
