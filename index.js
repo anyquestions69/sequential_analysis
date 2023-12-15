@@ -8,12 +8,11 @@ const symbols = [',', '.', '?', '!', ':', ';', '(', '–', '+', '-', '"', "'"]
 const suffArray = ['оньк','ёньк','енк','ник','щик','тель','очк','ушк','юшк','ышк','ниц','ся ','ть',' де',' гипо',' анти',' квази',' дис',' дез',' контр',' макро',' ре',' суб',' экс',' пост']
 const suffix = /оньк|ёньк|енк|ник|щик|тель|ик|ек|очк|ушк|юшк|ышк|ниц|ся |ть| анти| архи| квази| гипер| гипо| де| дез| дис| ин| интер| инфра| квази| кило| контр| макро| микро| мега| мата| мульти| орто| пан| пара| пост| прото| ре| суб| супер| транс| ультра| экстра| экс| о/g
 var text = fs.readFileSync(__dirname+'/input.txt').toString('utf-8');
-console.log(text)
 fs.readdir(__dirname+'/authors', function(err, files) {
     var words=stemText(text)
     var textSymb=specSymbols(text)
     var suff = suffixAnalyze(text)
-    console.log(`Автор - Лексемы - Спец символы - Суффиксы`)
+    console.log(`Автор \t\t-\t Лексемы \t\t-\t Спец символы \t\t-\t Суффиксы \t\t-\t Сумма евклидовых расстояний`)
     files.forEach(file => {
         if(file!='.gitkeep') {
       let auth = file.split('.')[0]
@@ -51,13 +50,12 @@ fs.readdir(__dirname+'/authors', function(err, files) {
                 author['sum']['suff']+=parseFloat(Math.sqrt((parseFloat(suff[s])-parseFloat(author['suff'][s]))**2))
             }
         }
-        console.log(`${auth} - ${author['sum']['word']} - ${author['sum']['symb']} - ${author['sum']['suff']}`)
         for(let p in author['sum']){
-            //console.log(author['sum'][p])
             author['total']+=parseFloat(author['sum'][p])
         }
         author['total']+=parseFloat(Math.sqrt(author['sum']['suff']))
-        console.log(author['total'])
+        console.log(`${auth} \t- \t${author['sum']['word']} \t-\t ${author['sum']['symb']} \t-\t ${author['sum']['suff']} \t\t-\t${author['total']}`)
+        
         
         });
     }  
@@ -72,9 +70,7 @@ function specSymbols(input){ //функция создания частотны�
                 if(!signObj[ch])signObj[ch]=0
                 signObj[ch]++
             }
-            
         }
-        
     }
     for(let s in signObj){
         signObj[s]=signObj[s]/input.length
@@ -85,13 +81,11 @@ function suffixAnalyze(input){ //функция создания частотн�
     let obj ={}
     for(let s of suffArray){
         let count = (input.match(s) || []).length;
-        obj[s]=count
-        
+        obj[s]=count 
     }
     for(let s in obj){
         obj[s]=obj[s]/input.length
     }
-   
     return obj
 }
 function createAuthor(name, input){ //функция создания частотных словарей лексем
@@ -108,7 +102,6 @@ function createAuthor(name, input){ //функция создания часто
     }
     for(let word in authors[name]){
         authors[name][word]=authors[name][word]/stemmedText.length
-        
     }
     return authors[name]
 }
@@ -128,7 +121,6 @@ function stemText(input){ //функция создания частотного
         if(!wordObj[word])wordObj[word]=0
         wordObj[word]++
     }
-    
     for(let word in wordObj){
         wordObj[word]=wordObj[word]/stemmedText.length
     }
