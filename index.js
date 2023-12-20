@@ -12,6 +12,11 @@ fs.readdir(__dirname+'/authors', function(err, files) {
     var words=stemText(text)
     var textSymb=specSymbols(text)
     var suff = suffixAnalyze(text)
+    for(let key in words){
+        if(parseFloat(words[key])>0.005)
+         console.log(key+' - '+words[key])
+    }
+    
     console.log(`Автор \t\t-\t Лексемы \t\t-\t Спец символы \t\t-\t Суффиксы \t\t-\t Сумма евклидовых расстояний`)
     files.forEach(file => {
         if(file!='.gitkeep') {
@@ -55,7 +60,16 @@ fs.readdir(__dirname+'/authors', function(err, files) {
         }
         author['total']+=parseFloat(Math.sqrt(author['sum']['suff']))
         console.log(`${auth} \t- \t${author['sum']['word']} \t-\t ${author['sum']['symb']} \t-\t ${author['sum']['suff']} \t\t-\t${author['total']}`)
-        
+        let j=0
+        /* for(let w in words){
+            if(j>100) break
+            if(w in author['words']){
+            console.log(`${w} - ${words[w]*100} - ${author['words'][w]*100}`)
+            j++
+            }
+        } */
+        let w='вызов'
+        console.log(`${w} - ${words[w]*100} - ${author['words'][w]*100}`)
         
         });
     }  
