@@ -1,8 +1,8 @@
 const fs = require('fs')
 const natural = require('natural');
 const stemmer = natural.PorterStemmerRu
-
-const stop_symbols = '.,!?:;"-\n\r()«»'
+const sw = require('remove-stopwords')
+const stop_symbols = '.,!?:;"-–=\n\r()«»'
 const authors={}
 const symbols = [',', '.', '?', '!', ':', ';', '(', '–', '+', '-', '"', "'"]
 const suffArray = ['оньк','ёньк','енк','ник','щик','тель','очк','ушк','юшк','ышк','ниц','ся ','ть',' де',' гипо',' анти',' квази',' дис',' дез',' контр',' макро',' ре',' суб',' экс',' пост']
@@ -59,7 +59,7 @@ fs.readdir(__dirname+'/authors', function(err, files) {
             author['total']+=parseFloat(author['sum'][p])
         }
         author['total']+=parseFloat(Math.sqrt(author['sum']['suff']))
-        console.log(`${auth} \t- \t${author['sum']['word']} \t-\t ${author['sum']['symb']} \t-\t ${author['sum']['suff']} \t\t-\t${author['total']}`)
+        console.log(`${auth} \t`)//- \t${author['sum']['word']} \t-\t ${author['sum']['symb']} \t-\t ${author['sum']['suff']} \t\t-\t${author['total']}`)
         let j=0
         /* for(let w in words){
             if(j>100) break
@@ -68,6 +68,12 @@ fs.readdir(__dirname+'/authors', function(err, files) {
             j++
             }
         } */
+        let max = Math.max.apply(null, Object.values(author['words']));
+        for(let i in author['words']){
+            if (author['words'][i]==max && author['words'][i] && words[i])
+            
+            console.log( parseFloat(Math.abs((parseFloat(words[i])-parseFloat(author['words'][i])))))
+        }
         let w='вызов'
         console.log(`${w} - ${words[w]*100} - ${author['words'][w]*100}`)
         
@@ -106,7 +112,8 @@ function createAuthor(name, input){ //функция создания часто
     for(let i of stop_symbols){
         input = input.replaceAll(i,' ').toLowerCase()
     }
-    let stemmedText= input.replace(/\r?\n|\r/g, "").split(' ').map(word => stemmer.stem(word))
+    let stemmedText= input.replace(/\r?\n|\r|[0-9]/g, " ").split(' ').map(word => stemmer.stem(word))
+    stemmedText = sw.removeStopwords(stemmedText, 'ru')
     if(!authors[name])authors[name]={}
     for(let word of stemmedText){
         if(word!=''){
@@ -127,7 +134,8 @@ function stemText(input){ //функция создания частотного
     for(let i of stop_symbols){
         input = input.replaceAll(i,' ').toLowerCase()
     }
-    let stemmedText= input.replace(/\r?\n|\r/g, "").split(' ').map(word => stemmer.stem(word))
+    let stemmedText= input.replace(/\r?\n|\r|[0-9]/g, "").split(' ').map(word => stemmer.stem(word))
+    stemmedText = sw.removeStopwords(stemmedText, 'ru')
     for(let word of stemmedText){
         for(let i of stop_symbols){
             word.replace(i,'').toLowerCase()

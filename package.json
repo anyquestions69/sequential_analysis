@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "natural": "^6.10.4"
+    "natural": "^6.10.4",
+    "remove-stopwords": "^1.0.3"
   }
 }
