@@ -59,7 +59,7 @@ fs.readdir(__dirname+'/authors', function(err, files) {
             author['total']+=parseFloat(author['sum'][p])
         }
         author['total']+=parseFloat(Math.sqrt(author['sum']['suff']))
-        console.log(`${auth} \t`)//- \t${author['sum']['word']} \t-\t ${author['sum']['symb']} \t-\t ${author['sum']['suff']} \t\t-\t${author['total']}`)
+        console.log(`${auth} \t- \t${author['sum']['word']} \t-\t ${author['sum']['symb']} \t-\t ${author['sum']['suff']} \t\t-\t${author['total']}`)
         let j=0
         /* for(let w in words){
             if(j>100) break
@@ -69,11 +69,11 @@ fs.readdir(__dirname+'/authors', function(err, files) {
             }
         } */
         let max = Math.max.apply(null, Object.values(author['words']));
-        for(let i in author['words']){
+       /*  for(let i in author['words']){
             if (author['words'][i]==max && author['words'][i] && words[i])
             
             console.log( parseFloat(Math.abs((parseFloat(words[i])-parseFloat(author['words'][i])))))
-        }
+        } */
         let w='вызов'
         console.log(`${w} - ${words[w]*100} - ${author['words'][w]*100}`)
         
